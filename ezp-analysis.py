@@ -32,11 +32,10 @@ def main():
     with open(output, 'wb') as csvfile:
         outfile = csv.writer(csvfile, delimiter = ',', quotechar="|", quoting=csv.QUOTE_MINIMAL)
 
-        outfile.writerow('filename,total connections, # on-campus connections, % on-campus connections of total, \
-    # off-campus connections, % off-campus connections of total, # library connections, \
-    % library of on-campus connections, % library of total connections, # student sessions off-campus, \
-    % student sessions of total off-campus, # fac/staff sessions off-campus, % fac/staff sessions of \
-    total off-campus')
+        outfile.writerow(["filename", "total connections", "# on-campus connections", "perc on-campus connections of total", \
+            "# off-campus connections", "perc off-campus connections of total", "# library connections", \
+            "perc library of on-campus connections", "perc library of total connections", "# student sessions off-campus", \
+            "perc student sessions of total off-campus", "# fac/staff sessions off-campus", "perc fac/staff sessions of total off-campus"])
 
         for filename in glob.glob(os.path.join(dirname, '*.log')): #opens all log files in directory
 
@@ -96,8 +95,12 @@ def main():
             else:
                 studfrac = 'n/a'
                 facfrac = 'n/a'
-                
-            libfraccamp = (float(libraryconnections)/oncampus) * 100 # library/total oncampus connections
+             
+            if oncampus is not 0:   
+                libfraccamp = (float(libraryconnections)/oncampus) * 100 # library/total oncampus connections
+            else:
+                libfraccamp = 'n/a'
+
             libfrac = (float(libraryconnections)/total) * 100 #library/total connections
             offcampfrac = (float(offcampus)/total) * 100 #oncampus/total connections
             oncampfrac = (float(oncampus)/total) * 100 #offcampus/total connections
